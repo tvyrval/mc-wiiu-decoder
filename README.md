@@ -38,5 +38,7 @@ The output extracts and preserves all known 32-bit parameters from the `WiiUProd
 
 If you are developing your own engine, a broader emulator infrastructure, or are interested in seeing *how* the hex structure maps internally inside the console itself, check out the provided [`WiiUProductCodes.md`](docs/WiiUProductCodes.md) included in this repository for full technical formatting specifications.
 
+For a complete catalogue of MD5 hashes and format timelines tracking every known Title Update (from legacy v64 to modern v688), see [`WiiUProductCodes_Versions.md`](docs/WiiUProductCodes_Versions.md).
+
 ---
 *No external modules dependencies required. Strictly uses the Python standard library.*
