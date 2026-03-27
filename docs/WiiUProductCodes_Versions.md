@@ -5,9 +5,9 @@ This document catalogs the MD5 hashes and structural formats of the `WiiUProduct
 As the game evolved, the proprietary binary format shifted to accommodate new padding alignments and DLC product parameters.
 
 ### Format Timeline
-- **v64 – v144**: `Legacy (v1)` format. Highly unoptimized, heavily padded, and entries lack `Code` identifiers.
-- **v161 – v448**: `Intermediate (v1.5)` format. Mid-generation transition. Introduces `Unk1/Unk2` header flags and serializes item structs but critically lacks `Index ID` fields.
-- **v480 – v688+**: `Modern (v2)` format. Fully contiguous, serialized structure utilized for the remainder of the console's lifespan.
+- **v48 – v144**: `Legacy (v1)` format. Highly unoptimized, heavily padded, and entries lack `Code` identifiers.
+- **v161 – v464**: `Intermediate (v1.5)` format. Mid-generation transition. Introduces `Unk1/Unk2` header flags and serializes item structs but critically lacks `Index ID` fields.
+- **v480 – v688**: `Modern (v2)` format. Fully contiguous, serialized structure utilized for the remainder of the console's lifespan.
 
 ---
 
@@ -15,7 +15,10 @@ As the game evolved, the proprietary binary format shifted to accommodate new pa
 
 | Title Update | MD5 Hash                           | Format Type |
 |--------------|------------------------------------|-------------|
+| **v48**      | `e61ed2d28a67cb347421c2f18a332ead` | Legacy (v1) |
 | **v64**      | `6d297a770e06324eec6874caa64d21f6` | Legacy (v1) |
+| **v80**      | `6d297a770e06324eec6874caa64d21f6` | Legacy (v1) |
+| **v96**      | `6d297a770e06324eec6874caa64d21f6` | Legacy (v1) |
 | **v112**     | `95defb6d260a71d3e8a0b21214f7fa5e` | Legacy (v1) |
 | **v128**     | `95defb6d260a71d3e8a0b21214f7fa5e` | Legacy (v1) |
 | **v144**     | `95defb6d260a71d3e8a0b21214f7fa5e` | Legacy (v1) |
@@ -35,6 +38,7 @@ As the game evolved, the proprietary binary format shifted to accommodate new pa
 | **v416**     | `85d134b674de8210ba342a2ff91c3ffc` | Intermediate (v1.5) |
 | **v432**     | `7a7f6ebdb2c542e1ad043bfef79896fd` | Intermediate (v1.5) |
 | **v448**     | `c1d6bb1f7f34d01fe6d01c96cccd0525` | Intermediate (v1.5) |
+| **v464**     | `b4040b2d468d5cb93033afac3dda344b` | Intermediate (v1.5) |
 | **v480**     | `1acfc44dd3615f7dae523a06a7c5f209` | Modern (v2) |
 | **v496**     | `07e2634641cfa320a2c515cd33732955` | Modern (v2) |
 | **v528**     | `35e3b492135c7a8f6aac2415d1f08f66` | Modern (v2) |
