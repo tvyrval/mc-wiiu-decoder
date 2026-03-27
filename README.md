@@ -36,7 +36,7 @@ The output extracts and preserves all known 32-bit parameters from the `WiiUProd
 
 ## Binary Documentation
 
-If you are developing your own engine, a broader emulator infrastructure, or are interested in seeing *how* the hex structure maps internally inside the console itself, check out the provided [`WiiUProductCodes.md`](WiiUProductCodes.md) included in this repository for full technical formatting specifications.
+If you are developing your own engine, a broader emulator infrastructure, or are interested in seeing *how* the hex structure maps internally inside the console itself, check out the provided [`WiiUProductCodes.md`](docs/WiiUProductCodes.md) included in this repository for full technical formatting specifications.
 
 ---
 *No external modules dependencies required. Strictly uses the Python standard library.*
