@@ -18,9 +18,10 @@ The file begins with a header containing a 12-byte region-specific magic string,
 | `0x0C` | 4            | `uint32_t` (LE)  | **Count**: The total number of DLC entries in the file. |
 
 ### Format Evolution
-Due to the game's many updates across its lifespan, there are multiple revisions of this file. They broadly fall into two categories:
+Due to the game's many updates across its lifespan, there are multiple revisions of this file. They broadly fall into three categories:
 - **Older Formats**: The DLC entries begin immediately after the `Count` field (offset `0x10`).
-- **Newer Formats**: The header has an additional 8 bytes before the entries begin.
+- **Intermediate Formats**: The header has an additional 8 bytes before the entries begin. The entries lack a specific `Index ID`.
+- **Newer Formats**: The header has an additional 8 bytes before the entries begin. The entries have an `Index ID`.
 
 **Newer Format Additional Header Fields (Offset `0x10`):**
 | Size | Type             | Description |
@@ -48,6 +49,25 @@ In newer versions of the game, the DLC items are stored sequentially in an array
 | 4    | `uint32_t`       | Little     | **Unknown 3**: Typically `0`. |
 | 4    | `uint32_t`       | Little     | **Unknown 4**: Typically `1`. |
 | 4    | `uint32_t`       | Little     | **Sort Index**: The priority index dictating where the DLC appears in UI menus. |
+
+---
+
+## Intermediate Format
+
+Found in mid-generation updates (e.g., TU v161), this format serves as an evolutionary bridge between the old and new structures. It features the 8-byte header padding of the newer format and natively supports the `Code` strings and `Sort Index`, but uses the 12-byte tail block inherited from older formats, and uniquely omits the `Index ID` integers entirely.
+
+### Entry Structure
+| Size | Type             | Endianness | Description |
+|------|------------------|------------|-------------|
+| 1    | `uint8_t`        | -          | **Name Length**: Length of the full name string. *(Note: There is no preceding Index ID)* |
+| Var. | `char[]`         | ASCII      | **Full Name**. |
+| 4    | `uint32_t`       | Big        | **Short Name Length**. |
+| Var. | `char[]`         | ASCII      | **Short Name / Abbreviation**. |
+| 12   | `uint32_t[3]`    | Big        | **Tail Array**: Three 32-bit integers, logically identical to the Older Format tail block. |
+| 4    | `char[4]`        | ASCII      | **Code**: 4-character identifier string (e.g. `0010`, or `----` for Bundles/Passes). |
+| 4    | `uint32_t`       | Little     | **Unknown 3**: Typically `0`. |
+| 4    | `uint32_t`       | Little     | **Unknown 4**: Typically `1`. |
+| 4    | `uint32_t`       | Little     | **Sort Index**: The priority sorting index. |
 
 ---
 

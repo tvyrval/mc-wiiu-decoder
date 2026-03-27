@@ -18,34 +18,45 @@ def parse_wiiu_product_codes(filepath):
     count = int.from_bytes(data[pos:pos+4], "little")
     pos += 4
     
-    is_v1 = False
-    if int.from_bytes(data[pos:pos+4], "little") == 0 and data[pos+4] < 0x80:
-        is_v1 = True
-    
-    unk1, unk2 = 0, 0
-    if not is_v1:
-        unk1 = int.from_bytes(data[pos:pos+4], "little")
+    version = 0
+    first_int = int.from_bytes(data[pos:pos+4], "little")
+    if first_int == 0 and data[pos+4] < 0x80:
+        version = 1
+        unk1, unk2 = 0, 0
+    else:
+        unk1 = first_int
         pos += 4
         unk2 = int.from_bytes(data[pos:pos+4], "little")
         pos += 4
-        print(f"File Header (v2) -> Count: {count}, Unk1: {unk1}, Unk2: {unk2}")
-    else:
+        if unk2 == 0:
+            version = 2
+        else:
+            version = 3
+    
+    if version == 1:
         print(f"File Header (v1 Legacy) -> Count: {count}")
+    elif version == 2:
+        print(f"File Header (v2 Mid) -> Count: {count}, Unk1: {unk1}, Unk2: {unk2}")
+    else:
+        print(f"File Header (v3 Modern) -> Count: {count}, Unk1: {unk1}, Unk2: {unk2}")
     
     items = []
     
     for i in range(count):
         if pos >= len(data): break
         
-        index_id = int.from_bytes(data[pos:pos+4], 'little')
-        pos += 4
+        if version == 1 or version == 3:
+            index_id = int.from_bytes(data[pos:pos+4], 'little')
+            pos += 4
+        else:
+            index_id = i
         
         name_len = data[pos]
         pos += 1
         name = data[pos:pos+name_len].decode('ascii', errors='replace')
         pos += name_len
         
-        if is_v1:
+        if version == 1:
             unk_before_short = int.from_bytes(data[pos:pos+4], 'big')
             pos += 4
             
@@ -82,6 +93,43 @@ def parse_wiiu_product_codes(filepath):
                             if all(32 <= b <= 126 for b in test_str):
                                 pos = search_pos
                                 break
+        elif version == 2:
+            short_name_len = int.from_bytes(data[pos:pos+4], 'big')
+            pos += 4
+            short_name = data[pos:pos+short_name_len].decode('ascii', errors='replace')
+            pos += short_name_len
+            
+            p1 = int.from_bytes(data[pos:pos+4], 'big')
+            pos += 4
+            p2 = int.from_bytes(data[pos:pos+4], 'big')
+            pos += 4
+            p3 = int.from_bytes(data[pos:pos+4], 'big')
+            pos += 4
+            
+            product_id = p1 if p1 != 0 else (p2 if p2 != 0 else 0)
+            
+            code = data[pos:pos+4].decode('ascii', errors='replace')
+            pos += 4
+            
+            unk3 = int.from_bytes(data[pos:pos+4], 'little')
+            pos += 4
+            
+            unk4 = int.from_bytes(data[pos:pos+4], 'little')
+            pos += 4
+            
+            sort_index = int.from_bytes(data[pos:pos+4], 'little')
+            pos += 4
+            
+            item = {
+                "index": index_id,
+                "name": name,
+                "short_name": short_name,
+                "product_id": product_id,
+                "code": code,
+                "unk3": unk3,
+                "unk4": unk4,
+                "sort_index": sort_index
+            }
         else:
             short_name_len = int.from_bytes(data[pos:pos+4], 'big')
             pos += 4
